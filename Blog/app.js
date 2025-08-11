@@ -11,6 +11,15 @@ app.set('views', './pages')
 // listen
 app.listen(3000)
 
+// middleware
+app.use((req, res, next) => {
+    console.log('New request made:')
+    console.log('Host: ', req.hostname)
+    console.log('Path: ', req.path)
+    console.log('Method: ', req.method)
+    next()
+})
+
 
 // get req
 app.get('/', (req, res) => {
