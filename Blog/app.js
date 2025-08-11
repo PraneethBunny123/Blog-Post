@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 
 const app = express()
 
@@ -12,13 +13,19 @@ app.set('views', './pages')
 app.listen(3000)
 
 // middleware
-app.use((req, res, next) => {
-    console.log('New request made:')
-    console.log('Host: ', req.hostname)
-    console.log('Path: ', req.path)
-    console.log('Method: ', req.method)
-    next()
-})
+// app.use((req, res, next) => {
+//     console.log('New request made:')
+//     console.log('Host: ', req.hostname)
+//     console.log('Path: ', req.path)
+//     console.log('Method: ', req.method)
+//     next()
+// })
+
+//static files and middleware
+app.use(express.static('public'))
+
+// middleware morgan
+app.use(morgan('dev'))
 
 
 // get req
