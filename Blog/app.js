@@ -12,7 +12,7 @@ const app = express()
 const dbUrl = process.env.MONGO_URI;
 
 mongoose.connect(dbUrl)
-    .then(() => console.log('Connected to Mongoose'))
+    .then(() => app.listen(3000))
     .catch(err => console.error(err));
 
 // register view engine
@@ -22,7 +22,7 @@ app.set('view engine', 'ejs')
 app.set('views', './pages')
 
 // listen
-app.listen(3000)
+// moved inside of mongoose, so that we only listen for requests when connection to mongodb is established.
 
 // middleware
 // app.use((req, res, next) => {
