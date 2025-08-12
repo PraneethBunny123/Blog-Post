@@ -7,7 +7,6 @@ const Blog = require('./models/blog');
 const { result } = require('lodash');
 
 
-
 const app = express()
 
 // connect to mongodb
@@ -42,47 +41,61 @@ app.use(express.static('public'))
 app.use(morgan('dev'))
 
 // mongoose routes
-app.get('/add-blog', (req, res) => {
-    const blog = new Blog({
-        title: 'New Blog2',
-        snippet: 'New praneeth snippet',
-        body: 'A new blog by praneeth'
-    })
+// app.get('/add-blog', (req, res) => {
+//     const blog = new Blog({
+//         title: 'New Blog2',
+//         snippet: 'New praneeth snippet',
+//         body: 'A new blog by praneeth'
+//     })
 
-    blog.save()
-        .then(result => {
-            res.send(result)
-        })
-        .catch(err => console.log(err)) 
-})
+//     blog.save()
+//         .then(result => {
+//             res.send(result)
+//         })
+//         .catch(err => console.log(err)) 
+// })
 
-// all blogs
-app.get('/all-blogs', (req, res) => {
-    Blog.find()
-        .then(result => {res.send(result)})
-        .catch(err => {console.log(err)})
-})
+// // all blogs
+// app.get('/all-blogs', (req, res) => {
+//     Blog.find()
+//         .then(result => {res.send(result)})
+//         .catch(err => {console.log(err)})
+// })
 
-// single blog
-app.get('/single-blog', (req, res) => {
-    Blog.findById('689b611f901a7704a9217d95')
-        .then(result => { res.send(result) })
-        .catch(err => {console.log(err)})
-})
+// // single blog
+// app.get('/single-blog', (req, res) => {
+//     Blog.findById('689b611f901a7704a9217d95')
+//         .then(result => { res.send(result) })
+//         .catch(err => {console.log(err)})
+// })
+
 
 // get req
 app.get('/', (req, res) => {
-    const blogs = [
-        {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    ];
-    res.render('index', {title: 'Home', blogs})
+    res.redirect('/blogs')
+
+    // dummy data
+
+    // const blogs = [
+    //     {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    //     {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    //     {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    // ];
+    // res.render('index', {title: 'Home', blogs})
 })
 
 app.get('/about', (req, res) => {
     res.render('about', {title: 'About'})
 })
+
+// blogs
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({createdAt: -1})
+        .then(result => {
+            res.render('index', {title: 'All Blogs', blogs: result})
+        })
+        .catch(err => {console.log(err)})
+    })
 
 // redirects
 // app.get('/about-me', (req, res) => {
