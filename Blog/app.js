@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const Blog = require('./models/blog');
+const { result } = require('lodash');
 
 
 
@@ -39,6 +41,20 @@ app.use(express.static('public'))
 // middleware morgan
 app.use(morgan('dev'))
 
+// mongoose routes
+app.get('/add-blog', (req, res) => {
+    const blog = new Blog({
+        title: 'New Blog',
+        snippet: 'New praneeth snippet',
+        body: 'A new blog by praneeth'
+    })
+
+    blog.save()
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => console.log(err)) 
+})
 
 // get req
 app.get('/', (req, res) => {
