@@ -4,7 +4,6 @@ const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const Blog = require('./models/blog');
-const { result } = require('lodash');
 
 
 const app = express()
@@ -36,6 +35,9 @@ app.set('views', './pages')
 
 //static files and middleware
 app.use(express.static('public'))
+
+// middleware to access data from form and pass it to req, so that the data will be added to database
+app.use(express.urlencoded({extended: true}))
 
 // middleware morgan
 app.use(morgan('dev'))
@@ -95,7 +97,19 @@ app.get('/blogs', (req, res) => {
             res.render('index', {title: 'All Blogs', blogs: result})
         })
         .catch(err => {console.log(err)})
-    })
+    }
+)
+
+// post request to add new blog when form is submitted
+app.post('/blogs', (req, res) => {
+    const blog = new Blog(req.body)
+
+    blog.save()
+        .then(result => {
+            res.redirect('/blogs')
+        })
+        .catch(err => {console.log(err)})
+})
 
 // redirects
 // app.get('/about-me', (req, res) => {
