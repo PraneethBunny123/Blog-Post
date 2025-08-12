@@ -1,7 +1,19 @@
+require('dotenv').config();
+
 const express = require('express')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
+
+
 
 const app = express()
+
+// connect to mongodb
+const dbUrl = process.env.MONGO_URI;
+
+mongoose.connect(dbUrl)
+    .then(() => console.log('Connected to Mongoose'))
+    .catch(err => console.error(err));
 
 // register view engine
 app.set('view engine', 'ejs')
