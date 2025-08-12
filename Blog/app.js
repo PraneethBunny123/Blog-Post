@@ -111,6 +111,16 @@ app.post('/blogs', (req, res) => {
         .catch(err => {console.log(err)})
 })
 
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id
+
+    Blog.findById(id)
+        .then(result => {
+            res.render('details', {title: 'Blog details', blog: result})
+        })
+        .catch(err => {console.log(err)}) 
+})
+
 // redirects
 // app.get('/about-me', (req, res) => {
 //     res.redirect('/about')
